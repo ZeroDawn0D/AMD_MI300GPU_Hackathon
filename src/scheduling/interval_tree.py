@@ -224,6 +224,7 @@ class IntervalTree:
                 x = x.left
             else:
                 x = x.right
+        
         return x if x != self.NIL else None
     
     def search_all(self,
@@ -388,7 +389,7 @@ def get_unix_time(time_val: datetime) -> int:
 
 class IntervalTreeScheduler:
     def __init__(self, event_list: List[Event]):
-        self.interval_list = [Interval.from_event(event) for event in event_list]
+        # self.interval_list = [Interval.from_event(event) for event in event_list]
         self.interval_tree = self.create_interval_tree(event_list)
 
     def __str__(self):
@@ -415,6 +416,7 @@ class IntervalTreeScheduler:
         sorted_clashing_intervals = sorted(clashing_intervals, 
                                            key = lambda x: x.priority,
                                            reverse=True)
+        self.interval_tree.insert(event_interval)
         for interval in sorted_clashing_intervals:
             self.interval_tree.delete(interval)
             new_low, new_high = self.find_nearest_slot(interval)
@@ -431,13 +433,15 @@ class IntervalTreeScheduler:
             candidate_interval_earlier = Interval(candidate_start_earlier,
                                                   candidate_start_earlier + duration,
                                                   interval.attendees)
+            
+            
             if not self.interval_tree.search(candidate_interval_earlier):
                 return candidate_start_earlier, candidate_start_earlier + duration
 
-            # Try moving later
             candidate_start_later = original_start + offset
             candidate_interval_later = Interval(candidate_start_later,
                                                 candidate_start_later + duration,
                                                 interval.attendees)
+            
             if not self.interval_tree.search(candidate_interval_later):
                 return candidate_start_later, candidate_start_later + duration
