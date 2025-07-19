@@ -3,10 +3,11 @@ from src.classes import Event
 from typing import List
 
 
-class Interval(Event):
-    def __init__(self, low, high):
+class Interval:
+    def __init__(self, low, high, attendees=None):
         self.low = low
         self.high = high
+        self.attendees=attendees
     
     def update_time(self, low, high):
         self.low = low
@@ -30,7 +31,7 @@ class Interval(Event):
         interval.final_start_time = event.final_start_time
         interval.final_end_time = event.final_end_time
         interval.attendees = event.attendees
-
+        interval.priority = event.priority
         return interval
     
     def to_event(self) -> Event:
@@ -46,7 +47,7 @@ class Interval(Event):
             summary=summary,
             attendees=self.attendees
         )
-        event.priority = self.priority or 0
+        event.priority = self.priority
         return event
 
     def overlaps(self, other):
@@ -251,7 +252,7 @@ class IntervalTree:
         return result
 
 
-    def inorder(self, x=None, result=None):
+    def inorder(self, x=None, result=None) -> List[IntervalTreeNode]:
         """
         Returns in-order traversal of tree (for debugging/inspection).
         """
@@ -377,7 +378,7 @@ class IntervalTree:
     
 
 def get_unix_time(time_val: datetime) -> int:
-    return int(time_val.timestamp)
+    return int(time_val.timestamp())
     
 
 class IntervalTreeScheduler:
@@ -385,7 +386,14 @@ class IntervalTreeScheduler:
         self.interval_list = [Interval.from_event(event) for event in event_list]
         self.interval_tree = self.create_interval_tree(event_list)
 
-
+    def __str__(self):
+        answer = "In order traversal of interval tree:\n"
+        list_nodes = self.interval_tree.inorder()
+        for node in list_nodes:
+            answer+= f"[{datetime.fromtimestamp(node.interval.low)}, {datetime.fromtimestamp(node.interval.high)}], {node.interval.summary}, priority = {node.interval.priority} \n"
+            answer+= f"attendees: {node.interval.attendees} \n"
+            answer += '\n'
+        return answer
 
     def create_interval_tree(self, event_list: List[Event]) -> IntervalTree:
         interval_tree = IntervalTree()
