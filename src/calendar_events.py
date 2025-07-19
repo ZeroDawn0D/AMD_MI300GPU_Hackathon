@@ -54,14 +54,14 @@ def get_all_calendar_events_dummy() -> list[Event]:
     return [
         Event("userone.amd@gmail.com", datetime(2025, 1, 1, 10, 0, 0), 
               datetime(2025, 1, 1, 11, 0, 0), "Meeting with team", [
-                  "usertwo.amd@gmail.com", "userthree.amd@gmail.com"
+                  "usertwo.amd@gmail.com", "userthree.amd@gmail.com", "userone.amd@gmail.com"
             ]),
         Event("usertwo.amd@gmail.com", datetime(2025, 1, 2, 12, 0, 0),
                 datetime(2025, 1, 2, 13, 0, 0), "Project discussion", [
-                    "userthree.amd@gmail.com"
+                    "userthree.amd@gmail.com", "usertwo.amd@gmail.com"
             ]),
         Event("usertwo.amd@gmail.com", datetime(2025, 1, 2, 12, 30, 0),
                 datetime(2025, 1, 2, 13, 30, 0), "Tea break", [
-                    "userone.amd@gmail.com"
+                    "userone.amd@gmail.com", "usertwo.amd@gmail.com"
             ]) 
     ]
