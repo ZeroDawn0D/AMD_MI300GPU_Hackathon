@@ -49,9 +49,10 @@ def get_created_events(user: str, start: str, end: str) -> list[Event]:
 
     return events_list
 
-def get_all_calendar_events_dummy() -> list[Event]:
-    # Dummy data for testing purposes
-    return [
+def get_all_calendar_events_dummy(ind=0) -> list[Event]:
+    test_cases = []
+
+    test_cases.append([
         Event("userone.amd@gmail.com", datetime(2025, 1, 1, 10, 0, 0), 
               datetime(2025, 1, 1, 11, 0, 0), "Meeting with team", [
                   "usertwo.amd@gmail.com", "userthree.amd@gmail.com", "userone.amd@gmail.com"
@@ -64,4 +65,82 @@ def get_all_calendar_events_dummy() -> list[Event]:
                 datetime(2025, 1, 2, 13, 30, 0), "Tea break", [
                     "userone.amd@gmail.com", "usertwo.amd@gmail.com"
             ], priority=4) 
-    ]
+    ])
+
+    # Atleast two events has to be rescheduled
+    test_cases.append([
+        Event("userone.amd@gmail.com", datetime(2025, 1, 1, 9, 0, 0),
+                datetime(2025, 1, 1, 11, 0, 0), "Morning meetup", [
+                    "userone.amd@gmail.com", "userthree.amd@gmail.com"
+            ], priority=3),
+        Event("usertwo.amd@gmail.com", datetime(2025, 1, 2, 10, 0, 0),
+                datetime(2025, 1, 2, 12, 0, 0), "Urgent meeting with suppliers", [
+                    "usertwo.amd@gmail.com", "userone.amd@gmail.com"
+            ], priority=2),
+        Event("userthree.amd@gmail.com", datetime(2025, 1, 2, 11, 0, 0),
+                datetime(2025, 1, 2, 13, 0, 0), "Tea break", [
+                    "usertwo.amd@gmail.com", "userthree.amd@gmail.com"
+            ], priority=4),
+    ])
+
+    # Space for two smaller meetings
+    test_cases.append([
+        Event("userone.amd@gmail.com", datetime(2025, 1, 1, 9, 0, 0),
+                datetime(2025, 1, 1, 11, 0, 0), "Alert! Infrastucture issue. Quick resolution needed", [
+                    "userone.amd@gmail.com", "usertwo.amd@gmail.com"
+            ], priority=2),
+        Event("usertwo.amd@gmail.com", datetime(2025, 1, 1, 9, 30, 0),
+                datetime(2025, 1, 1, 10, 0, 0), "A calm break from work", [
+                    "userthree.amd@gmail.com", "usertwo.amd@gmail.com"
+            ], priority=4),
+        Event("usertwo.amd@gmail.com", datetime(2025, 1, 1, 12, 0, 0),
+                datetime(2025, 1, 1, 14, 0, 0), "Meeting with CEO on performance", [
+                    "userthree.amd@gmail.com", "usertwo.amd@gmail.com"
+            ], priority=2),
+        Event("userthree.amd@gmail.com", datetime(2025, 1, 1, 13, 0, 0),
+                datetime(2025, 1, 1, 13, 30, 0), "Joining celebrations for new employees", [
+                    "userthree.amd@gmail.com", "userone.amd@gmail.com"
+            ], priority=4),
+    ])
+
+    # Space for only one smaller meeting
+    test_cases.append([
+        Event("userone.amd@gmail.com", datetime(2025, 1, 1, 9, 0, 0),
+                datetime(2025, 1, 1, 11, 0, 0), "Alert! Infrastucture issue. Quick resolution needed", [
+                    "userone.amd@gmail.com", "usertwo.amd@gmail.com"
+            ], priority=2),
+        Event("usertwo.amd@gmail.com", datetime(2025, 1, 1, 9, 30, 0),
+                datetime(2025, 1, 1, 10, 0, 0), "A calm break from work", [
+                    "userthree.amd@gmail.com", "usertwo.amd@gmail.com"
+            ], priority=4),
+        Event("usertwo.amd@gmail.com", datetime(2025, 1, 1, 12, 0, 0),
+                datetime(2025, 1, 1, 14, 0, 0), "Meeting with CEO on performance", [
+                    "userthree.amd@gmail.com", "usertwo.amd@gmail.com"
+            ], priority=2),
+        Event("userthree.amd@gmail.com", datetime(2025, 1, 1, 13, 0, 0),
+                datetime(2025, 1, 1, 14, 0, 0), "Joining celebrations for new employees", [
+                    "userthree.amd@gmail.com", "userone.amd@gmail.com"
+            ], priority=4),
+    ])
+
+    # No space for any smaller meeting
+    test_cases.append([
+        Event("userone.amd@gmail.com", datetime(2025, 1, 1, 9, 0, 0),
+                datetime(2025, 1, 1, 11, 0, 0), "Alert! Infrastucture issue. Quick resolution needed", [
+                    "userone.amd@gmail.com", "usertwo.amd@gmail.com"
+            ], priority=2),
+        Event("usertwo.amd@gmail.com", datetime(2025, 1, 1, 9, 0, 0),
+                datetime(2025, 1, 1, 12, 0, 0), "A calm break from work", [
+                    "userthree.amd@gmail.com", "usertwo.amd@gmail.com"
+            ], priority=4),
+        Event("usertwo.amd@gmail.com", datetime(2025, 1, 1, 12, 0, 0),
+                datetime(2025, 1, 1, 14, 0, 0), "Meeting with CEO on performance", [
+                    "userthree.amd@gmail.com", "usertwo.amd@gmail.com"
+            ], priority=2),
+        Event("userthree.amd@gmail.com", datetime(2025, 1, 1, 13, 0, 0),
+                datetime(2025, 1, 1, 14, 0, 0), "Joining celebrations for new employees", [
+                    "userthree.amd@gmail.com", "userone.amd@gmail.com"
+            ], priority=4),
+    ])
+
+    return test_cases[ind]
