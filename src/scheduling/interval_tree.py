@@ -271,8 +271,8 @@ class IntervalTree:
         Deletes a node with the given interval from the tree.
         """
         z = self._find_node(self.root, interval)
-        if z == self.NIL:
-            return  # Not found
+        if z == self.NIL or not self._intervals_equal(z.interval, interval):
+            return  # No exact match found; do nothing
 
         y = z
         y_original_color = y.color
@@ -304,11 +304,16 @@ class IntervalTree:
         if y_original_color == BLACK:
             self._fix_delete(x)
 
+    def _intervals_equal(self, a, b):
+        return (
+            a.low == b.low and
+            a.high == b.high and
+            set(a.attendees) == set(b.attendees) and
+            a.summary == b.summary
+        )
     def _find_node(self, node, interval):
         while node != self.NIL:
-            if (interval.low == node.interval.low 
-                and interval.high == node.interval.high
-                and set(interval.attendees) == set(node.interval.attendees)):
+            if self._intervals_equal(interval, node.interval):
                 return node
             elif interval.low < node.interval.low:
                 node = node.left
@@ -420,7 +425,7 @@ class IntervalTreeScheduler:
         # TODO: Add proper window limitations
         duration = interval.high - interval.low
         original_start = interval.low
-        for offset in range(step, search_window + step, step):
+        for offset in range(0, search_window + step, step):
             # Try moving earlier
             candidate_start_earlier = original_start - offset
             candidate_interval_earlier = Interval(candidate_start_earlier,

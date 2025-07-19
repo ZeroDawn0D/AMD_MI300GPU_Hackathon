@@ -5,8 +5,6 @@ from src.scheduling.interval_tree import *
 def test_tree_creation():
     calendar_events = get_all_calendar_events_dummy()
     scheduler = IntervalTreeScheduler(calendar_events)
-    print(scheduler)
-
 def test_event_insertion():
     calendar_events = get_all_calendar_events_dummy()
     scheduler = IntervalTreeScheduler(calendar_events)
@@ -17,7 +15,6 @@ def test_event_insertion():
                       ["userthree.amd@gmail.com", "usertwo.amd@gmail.com"],
                       priority=3.5)
     scheduler.insert_event(new_event)
-    print(scheduler)
 
 if __name__ == "__main__":
     test_tree_creation()
