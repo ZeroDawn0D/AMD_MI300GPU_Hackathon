@@ -11,12 +11,13 @@ class Event:
         self.summary = summary
         self.attendees = attendees
 
-        # Fields initialized later in the pipeline
-        self.window_start_time = None
-        self.window_end_time = None
-        self.priority = None
-        self.final_start_time = None
-        self.final_end_time = None
+        # Fields initialized later in the pipeline, for now set to default values
+        curr_time = datetime.now()
+        self.priority: float = 0.0
+        self.window_start_time: datetime = curr_time
+        self.window_end_time: datetime = curr_time
+        self.final_start_time: datetime = curr_time
+        self.final_end_time: datetime = curr_time
 
     def to_dict(self):
         return {
