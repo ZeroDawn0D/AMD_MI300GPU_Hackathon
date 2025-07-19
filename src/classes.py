@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, time
 
 class Event:
     def __init__(self, creator: str, start_time: datetime, end_time: datetime,
@@ -14,8 +14,8 @@ class Event:
         # Fields initialized later in the pipeline, for now set to default values
         curr_time = datetime.now()
         self.priority: float = 0.0
-        self.window_start_time: datetime = curr_time
-        self.window_end_time: datetime = curr_time
+        self.window_start_time: datetime = datetime.combine(curr_time.date(), time(9, 0)) 
+        self.window_end_time: datetime = datetime.combine(curr_time.date(), time(17, 0))
         self.final_start_time: datetime = curr_time
         self.final_end_time: datetime = curr_time
 
