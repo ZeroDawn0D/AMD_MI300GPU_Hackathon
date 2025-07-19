@@ -1,17 +1,14 @@
 from datetime import datetime
 
 class Event:
-    def __init__(self, request_id: int, creator: str, start_time: datetime,
-                 end_time: datetime, subject: str, content: str,
-                 attendees: list[str]):
+    def __init__(self, creator: str, start_time: datetime, end_time: datetime,
+                 summary: str, attendees: list[str]):
         
         # Fields initialized at the creation of the event
-        self.request_id = request_id
         self.creator = creator
         self.start_time = start_time
         self.end_time = end_time
-        self.subject = subject
-        self.content = content
+        self.summary = summary
         self.attendees = attendees
 
         # Fields initialized later in the pipeline
@@ -26,7 +23,6 @@ class Event:
             'creater': self.creator,
             'start_time': self.start_time,
             'end_time': self.end_time,
-            'subject': self.subject,
-            'content': self.content
+            'summary': self.summary,
         }
     # Finish the rest as needed
