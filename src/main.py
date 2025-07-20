@@ -3,6 +3,7 @@ from threading import Thread
 import json
 from src.calendar_priority import set_event_priorities_sync
 from src.calendar_events import get_all_calendar_events
+from src.input_parser_agent import get_new_event_sync
 from src.output import format_to_output
 from src.classes import Event
 from datetime import datetime, timedelta, timezone
@@ -34,7 +35,7 @@ def get_new_event_from_dict():
 def your_meeting_assistant(data): 
     # Get new event details from the incoming dict
     # will come from Rohit
-    new_event = get_new_event_from_dict()
+    new_event = get_new_event_sync(data)
     ist = timezone(timedelta(hours=5, minutes=30))
     curr_time = datetime.now(ist)
     calender_events = get_all_calendar_events(users, curr_time.isoformat(), 
@@ -56,8 +57,6 @@ def receive():
     print(f"\n\n\n Sending:\n {json.dumps(new_data, indent=2)}")
     return jsonify(new_data)
 
-def run_flask():
-    app.run(host='0.0.0.0', port=5000)
 
 if __name__ == '__main__':
-    Thread(target=run_flask).start()
+    app.run(host='0.0.0.0', port=5000)

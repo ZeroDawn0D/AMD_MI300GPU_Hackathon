@@ -427,7 +427,7 @@ class IntervalTreeScheduler:
             interval.update_time(new_low,new_high)
             self.interval_tree.insert(interval)
     
-    def find_nearest_slot(self, interval, step=300, search_window=86400*7):
+    def find_nearest_slot(self, interval, step=60, search_window=86400*14):
         # TODO: Add proper window limitations
         duration = interval.high - interval.low
         original_start = interval.low

@@ -22,21 +22,24 @@ def format_to_output(events,
 
     user_to_timetable: dict[str, dict] = {}
     for event in events:
-        user = event.creator
-        if user not in user_to_timetable:
-            user_to_timetable[user] = {
-                "email": user,
-                "events": []
-            }
-        
-        user_to_timetable[user]["events"].append({
-            "StartTime": event.final_start_time.isoformat(),
-            "EndTime": event.final_end_time.isoformat(),
-            "Attendees": event.attendees,
-            "Summary": event.summary,
-            "NumAttendees": len(event.attendees)
-        })
+        for user in event.attendees:
+            if user == "SELF":
+                user = event.creator
+            if user not in user_to_timetable:
+                user_to_timetable[user] = {
+                    "email": user,
+                    "events": []
+                }
+
+            user_to_timetable[user]["events"].append({
+                "StartTime": event.final_start_time.isoformat(),
+                "EndTime": event.final_end_time.isoformat(),
+                "Attendees": event.attendees,
+                "Summary": event.summary,
+                "NumAttendees": len(event.attendees)
+            })
 
     result_dict["Attendees"] = list(user_to_timetable.values())
 
-    return json.dumps(result_dict)
+    return json.dumps(result_dict)appy:~/Desktop/code/AMD_MI300GPU_Hackathon$ ls
+keys  README.md  
