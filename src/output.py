@@ -2,7 +2,9 @@ from classes import Event
 from datetime import datetime
 import json
 
-def format_to_output(events: list[Event], new_event_dict: dict, new_event: Event) -> str:
+def format_to_output(events: list[Event],
+                     new_event_dict: dict, 
+                     new_event: Event) -> str:
     result_dict = {}
 
     result_dict["Request_id"] = new_event_dict["Request_id"]

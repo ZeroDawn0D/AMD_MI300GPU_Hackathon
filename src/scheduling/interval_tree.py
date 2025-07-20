@@ -310,7 +310,8 @@ class IntervalTree:
             a.low == b.low and
             a.high == b.high and
             set(a.attendees) == set(b.attendees) and
-            a.summary == b.summary
+            a.summary == b.summary and
+            a.creator == b.creator
         )
     def _find_node(self, node, interval):
         while node != self.NIL:
@@ -451,13 +452,11 @@ class IntervalTreeScheduler:
             
 
 
-def reschedule_all_meetings(input_data: dict):
-    events = []
-    for event_data in input_data.get('events',[]):
-        event = Event(**event_data)
-        events.append(event)
-    
-        
+def reschedule_all_meetings(events):
     scheduler = IntervalTreeScheduler(events)
     interval_tree_nodes = scheduler.interval_tree.inorder()
     intervals = [x.interval for x in interval_tree_nodes]
+    for interval in intervals:
+        interval.final_start_time = datetime.fromtimestamp(interval.low)
+        interval.final_end_time = datetime.fromtimestamp(interval.high)
+    return intervals
