@@ -18,8 +18,10 @@ The system fetches calendar events from three users via Google Calendar API, ana
 
 ## Novelty and Experiments
 
-- The core scheduling logic is powered by a red-black tree modified to support interval scheduling specific to the problem statement.
-- We tried a variety of experiments and methodologies to maximise accuracy and minimise latency. In the limited time, we noticed that for the amount of reasoning we were asking the LLM to do, smaller models were incorrect half the time while larger models were exceeding the time limit of 10seconds. In the end, our final working snapshot was to use LLama 3.3 80B with one monolithic instruction
+- The core scheduling logic is powered by a classic red-black tree modified to support interval scheduling specific to the problem statement. This code is under src/scheduling/
+- We tried a variety of experiments and methodologies to maximise accuracy and minimise latency. In the limited time, we noticed that for the amount of reasoning we were asking the LLM to do, smaller models were incorrect half the time while larger models were exceeding the time limit of 10seconds. In the end, our final working snapshot was to use LLama 3.3 70B with one monolithic instruction
+- Smaller models (LLaMA 8B, Deepseek 16B,  Qwen) were inaccurate half the time, these were giving us a sub 5second latency but unreliable
+- LLaMA 3 70B follows instructions accurately and reasons well, but gives us a latency of around 11-16seconds
 
 ## Project Structure
 
