@@ -4,7 +4,7 @@ import json
 
 def format_to_output(events,
                      new_event_dict: dict, 
-                     new_event: Event) -> str:
+                     new_event: Event) -> dict:
     result_dict = {}
 
     result_dict["Request_id"] = new_event_dict["Request_id"]
@@ -13,18 +13,19 @@ def format_to_output(events,
     result_dict["Datetime"] = new_event_dict["Datetime"]
     result_dict["Subject"] = new_event_dict["Subject"]
     result_dict["EmailContent"] = new_event_dict["EmailContent"]
-    result_dict["EventStart"] = new_event.final_start_time.isoformat()
-    result_dict["EventEnd"] = new_event.final_end_time.isoformat()
+    result_dict["EventStart"] = new_event.start_time.isoformat()
+    result_dict["EventEnd"] = new_event.end_time.isoformat()
 
-    duration_secs = (new_event.final_end_time - new_event.final_start_time).total_seconds()
-    result_dict["Duration_mins"] = duration_secs // 60
+    duration_secs = (new_event.end_time - new_event.start_time).total_seconds()
+    result_dict["Duration_mins"] = str(int(duration_secs // 60))
     result_dict["MetaData"] = {}
 
     user_to_timetable: dict[str, dict] = {}
     for event in events:
+        for i in range(len(event.attendees)):
+            if event.attendees[i] == "SELF":
+                event.attendees[i] = event.creator
         for user in event.attendees:
-            if user == "SELF":
-                user = event.creator
             if user not in user_to_timetable:
                 user_to_timetable[user] = {
                     "email": user,
@@ -40,6 +41,4 @@ def format_to_output(events,
             })
 
     result_dict["Attendees"] = list(user_to_timetable.values())
-
-    return json.dumps(result_dict)appy:~/Desktop/code/AMD_MI300GPU_Hackathon$ ls
-keys  README.md  
+    return result_dict

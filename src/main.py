@@ -8,7 +8,7 @@ from src.output import format_to_output
 from src.classes import Event
 from datetime import datetime, timedelta, timezone
 from src.scheduling.interval_tree import reschedule_all_meetings
-
+from rich import print_json
 
 app = Flask(__name__)
 
@@ -49,14 +49,14 @@ def your_meeting_assistant(data):
     return output_formatted
 
 
+
 @app.route('/receive', methods=['POST'])
 def receive():
     data = request.get_json()
     print(f"\n Received: {json.dumps(data, indent=2)}")
     new_data = your_meeting_assistant(data)
-    print(f"\n\n\n Sending:\n {json.dumps(new_data, indent=2)}")
+    print_json(json.dumps(new_data, indent=2))
     return jsonify(new_data)
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
