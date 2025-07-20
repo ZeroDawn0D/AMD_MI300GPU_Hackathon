@@ -390,7 +390,9 @@ def get_unix_time(time_val: datetime) -> int:
 class IntervalTreeScheduler:
     def __init__(self, event_list: List[Event]):
         # self.interval_list = [Interval.from_event(event) for event in event_list]
-        self.interval_tree = self.create_interval_tree(event_list)
+        self.interval_tree = IntervalTree()
+        self.create_interval_tree(event_list)
+        # if pre existing schedule has conflicts
 
     def __str__(self):
         answer = "In order traversal of interval tree:\n"
@@ -402,11 +404,12 @@ class IntervalTreeScheduler:
         return answer
 
     def create_interval_tree(self, event_list: List[Event]) -> IntervalTree:
-        interval_tree = IntervalTree()
+        #interval_tree = IntervalTree()
         for event in event_list:
             interval = Interval.from_event(event)
-            interval_tree.insert(interval)
-        return interval_tree
+            #interval_tree.insert(interval)
+            self.insert_event(event)
+        #return interval_tree
     
     def insert_event(self, event: Event):
         event_interval = Interval.from_event(event)
@@ -445,3 +448,16 @@ class IntervalTreeScheduler:
             
             if not self.interval_tree.search(candidate_interval_later):
                 return candidate_start_later, candidate_start_later + duration
+            
+
+
+def reschedule_all_meetings(input_data: dict):
+    events = []
+    for event_data in input_data.get('events',[]):
+        event = Event(**event_data)
+        events.append(event)
+    
+        
+    scheduler = IntervalTreeScheduler(events)
+    interval_tree_nodes = scheduler.interval_tree.inorder()
+    intervals = [x.interval for x in interval_tree_nodes]

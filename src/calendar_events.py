@@ -53,8 +53,8 @@ def get_all_calendar_events_dummy(ind=0) -> list[Event]:
     test_cases = []
 
     test_cases.append([
-        Event("userone.amd@gmail.com", datetime(2025, 1, 1, 10, 0, 0), 
-              datetime(2025, 1, 1, 11, 0, 0), "Meeting with team", [
+        Event("userone.amd@gmail.com", datetime(2025, 1, 2, 10, 0, 0), 
+              datetime(2025, 1, 2, 11, 0, 0), "Meeting with team", [
                   "usertwo.amd@gmail.com", "userthree.amd@gmail.com", "userone.amd@gmail.com"
             ], priority=2),
         Event("usertwo.amd@gmail.com", datetime(2025, 1, 2, 12, 0, 0),
@@ -73,7 +73,7 @@ def get_all_calendar_events_dummy(ind=0) -> list[Event]:
                 datetime(2025, 1, 1, 11, 0, 0), "Morning meetup", [
                     "userone.amd@gmail.com", "userthree.amd@gmail.com"
             ], priority=3),
-        Event("usertwo.amd@gmail.com", datetime(2025, 1, 2, 10, 0, 0),
+        Event("usertwo.amd@gmail.com", datetime(2025, 1, 1, 10, 0, 0),
                 datetime(2025, 1, 2, 12, 0, 0), "Urgent meeting with suppliers", [
                     "usertwo.amd@gmail.com", "userone.amd@gmail.com"
             ], priority=2),
