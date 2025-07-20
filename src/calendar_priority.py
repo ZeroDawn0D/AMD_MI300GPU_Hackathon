@@ -1,14 +1,30 @@
-import requests
+from pydantic_ai.models.openai import OpenAIModel
+from pydantic_ai.providers.openai import OpenAIProvider
+import os
+from pydantic_ai import Agent
+import asyncio
 
-def set_event_priorities(events: list, url: str = "http://localhost:4000/v1/chat/completions") -> list:
+# Use the same environment variables and provider setup
+os.environ["BASE_URL"] = "http://localhost:8000/v1"
+os.environ["OPENAI_API_KEY"] = "abc-123"
+
+# Create OpenAI-compatible provider
+provider = OpenAIProvider(
+    base_url=os.environ["BASE_URL"],
+    api_key=os.environ["OPENAI_API_KEY"],
+)
+
+# Reference the same model as your existing agent
+priority_agent_model = OpenAIModel("llama3-70b", provider=provider)
+
+async def set_event_priorities(events: list) -> list:
     """
     Use LLM to analyze event summaries and set priority levels.
     Modifies the events in place and returns the updated list.
     
     Args:
         events: List of Event objects
-        url: vLLM API endpoint URL
-    
+        
     Returns:
         List of Event objects with updated priorities
     """
@@ -17,11 +33,12 @@ def set_event_priorities(events: list, url: str = "http://localhost:4000/v1/chat
     summaries = []
     for i, event in enumerate(events):
         summaries.append(f"Event {i+1}: {event.summary}")
-    
     summaries_text = "\n".join(summaries)
     
-    # System prompt for priority classification
-    system_prompt = """You are an expert at analyzing calendar events and assigning priority levels.
+    # Create agent with priority classification system prompt
+    priority_agent = Agent(
+        model=priority_agent_model,
+        system_prompt="""You are an expert at analyzing calendar events and assigning priority levels.
 
 Based on the event summary, assign one of these priority levels:
 1 = FIXED (unchangeable events like appointments, deadlines, client meetings)
@@ -37,40 +54,18 @@ Consider factors like:
 
 Return ONLY the numbers (1, 2, 3, or 4) separated by commas, nothing else.
 Example output: 2, 3, 1, 4"""
-
+    )
+    
+    # Create user prompt
     user_prompt = f"""Analyze these event summaries and assign priority levels:
-
 {summaries_text}
 
 Return only the priority numbers separated by commas."""
-
-    # API request
-    headers = {"Content-Type": "application/json"}
-    data = {
-        "model": "/home/user/Models/meta-llama/Meta-Llama-3.1-8B-Instruct",
-        "messages": [
-            {
-                "role": "system", 
-                "content": system_prompt
-            },
-            {
-                "role": "user",
-                "content": user_prompt
-            }
-        ],
-        "stream": False,
-        "max_tokens": 100,
-        "temperature": 0  # Lower temperature for more consistent classification
-    }
     
     try:
-        # Make API request
-        response = requests.post(url, headers=headers, json=data)
-        response.raise_for_status()
-        
-        # Extract priorities from response
-        response_json = response.json()
-        content = response_json['choices'][0]['message']['content'].strip()
+        # Run the agent
+        result = await priority_agent.run(user_prompt)
+        content = result.output.strip()
         
         # Parse the comma-separated priorities
         priority_strings = content.split(',')
@@ -91,4 +86,13 @@ Return only the priority numbers separated by commas."""
         # Return events with default priorities unchanged
         return events
 
+# Example usage function (similar to your existing pattern)
+async def process_priority_request(events_list):
+    """Process priority request and return updated events"""
+    result = await set_event_priorities(events_list)
+    return result
 
+# If you need to run this synchronously, you can use:
+def set_event_priorities_sync(events: list) -> list:
+    """Synchronous wrapper for the async priority setting function"""
+    return asyncio.run(set_event_priorities(events))

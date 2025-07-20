@@ -1,4 +1,4 @@
-from classes import Event
+from src.classes import Event
 from datetime import datetime
 import json
 

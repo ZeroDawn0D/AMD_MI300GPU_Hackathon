@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from threading import Thread
 import json
-from src.calendar_priority import set_event_priorities
+from src.calendar_priority import set_event_priorities_sync
 from src.calendar_events import get_all_calendar_events
 from src.output import format_to_output
 from src.classes import Event
@@ -40,7 +40,7 @@ def your_meeting_assistant(data):
     calender_events = get_all_calendar_events(users, curr_time.isoformat(), 
                                                 (curr_time + timedelta(weeks=1)).isoformat())
     calender_events.append(new_event)
-    set_event_priorities(calender_events)
+    set_event_priorities_sync(calender_events)
     # use new_event and calender_events to get scheduled events
     scheduled_events = reschedule_all_meetings(calender_events) 
     # Format the output
