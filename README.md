@@ -18,7 +18,8 @@ The system fetches calendar events from three users via Google Calendar API, ana
 
 ## Novelty and Experiments
 
-- The core scheduling logic is powered by a red-black tree modified to support interval scheduling.
+- The core scheduling logic is powered by a red-black tree modified to support interval scheduling specific to the problem statement.
+- We tried a variety of experiments and methodologies to maximise accuracy and minimise latency. In the limited time, we noticed that for the amount of reasoning we were asking the LLM to do, smaller models were incorrect half the time while larger models were exceeding the time limit of 10seconds. In the end, our final working snapshot was to use LLama 3.3 80B with one monolithic instruction
 
 ## Project Structure
 
