@@ -2,7 +2,7 @@ from classes import Event
 from datetime import datetime
 import json
 
-def format_to_output(events: list[Event],
+def format_to_output(events,
                      new_event_dict: dict, 
                      new_event: Event) -> str:
     result_dict = {}
@@ -30,8 +30,8 @@ def format_to_output(events: list[Event],
             }
         
         user_to_timetable[user]["events"].append({
-            "StartTime": event.start_time.isoformat(),
-            "EndTime": event.end_time.isoformat(),
+            "StartTime": event.final_start_time.isoformat(),
+            "EndTime": event.final_end_time.isoformat(),
             "Attendees": event.attendees,
             "Summary": event.summary,
             "NumAttendees": len(event.attendees)
