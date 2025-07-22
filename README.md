@@ -8,6 +8,9 @@ This project is developed for the AMD MI300GPU Hackathon. It's an intelligent ca
 
 The system fetches calendar events from three users via Google Calendar API, analyzes event urgency using an LLM (Large Language Model), assigns priority scores, and uses a sophisticated interval tree-based scheduler to find optimal event arrangements that minimize conflicts.
 
+<img width="1212" height="682" alt="image" src="https://github.com/user-attachments/assets/094590f0-4f8f-498e-bb12-8bf7bc660f26" />
+
+
 ## Features
 
 - **Multi-User Calendar Integration**: Connects to Google Calendar API to fetch events from multiple users
